@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор</title>
+    <style>
+        body { font-family: system-ui, sans-serif; max-width: 320px; margin: 2rem auto; padding: 1rem; }
+        h1 { font-size: 1.25rem; }
+        label, input, select, button { display: block; width: 100%; margin-bottom: 0.5rem; box-sizing: border-box; }
+        input, select { padding: 0.5rem; }
+        button { padding: 0.6rem; cursor: pointer; background: #2563eb; color: white; border: none; border-radius: 6px; }
+        button:hover { background: #1d4ed8; }
+        #result { margin-top: 1rem; font-weight: bold; }
+        .error { color: #dc2626; }
+    </style>
+</head>
+<body>
+    <h1>Калькулятор</h1>
+    <label for="a">Первое число (a):</label>
+    <input type="number" id="a" step="any" value="0">
+    <label for="op">Операция:</label>
+    <select id="op">
+        <option value="add">Сложение (+)</option>
+        <option value="subtract">Вычитание (−)</option>
+        <option value="multiply">Умножение (×)</option>
+        <option value="divide">Деление (÷)</option>
+    </select>
+    <label for="b">Второе число (b):</label>
+    <input type="number" id="b" step="any" value="0">
+    <button type="button" id="calc">Вычислить</button>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('calc').onclick = function () {
+            var a = document.getElementById('a').value;
+            var b = document.getElementById('b').value;
+            var op = document.getElementById('op').value;
+            var resultEl = document.getElementById('result');
+            var url = 'api/calculate/?a=' + encodeURIComponent(a) + '&b=' + encodeURIComponent(b) + '&op=' + encodeURIComponent(op);
+            fetch(url)
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    resultEl.className = '';
+                    resultEl.textContent = 'Результат: ' + (data.result !== undefined ? data.result : data.error);
+                    if (data.error) resultEl.classList.add('error');
+                })
+                .catch(function () {
+                    resultEl.className = 'error';
+                    resultEl.textContent = 'Ошибка запроса';
+                });
+        };
+    </script>
+</body>
+</html>
