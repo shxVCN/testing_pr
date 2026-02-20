@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><title>Книги</title></head>
+<body>
+<h1>Книги</h1>
+<ul>
+{% for book in books %}
+<li>{{ book.title }} — {{ book.author }}
+  <form method="post" action="{% url 'library:book_delete' book.pk %}" style="display:inline">{% csrf_token %}<button type="submit">Удалить</button></form>
+</li>
+{% empty %}
+<li>Нет книг.</li>
+{% endfor %}
+</ul>
+<a href="{% url 'library:book_add' %}">Добавить книгу</a> | <a href="{% url 'library:reader_list' %}">Читатели</a> | <a href="{% url 'library:loan_list' %}">Выдачи</a>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+<head><title>Добавить читателя</title></head>
+<body>
+<h1>Добавить читателя</h1>
+<form method="post">{% csrf_token %}{{ form.as_p }}<button type="submit">Сохранить</button></form>
+<a href="{% url 'library:reader_list' %}">Назад</a>
+</body>
+</html>

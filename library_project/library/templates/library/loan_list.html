@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head><title>Выдачи книг</title></head>
+<body>
+<h1>Выдачи книг</h1>
+<ul>
+{% for loan in loans %}
+<li>{{ loan.book }} — {{ loan.reader }} ({{ loan.issued_at|date }}) {% if not loan.returned_at %}<form method="post" action="{% url 'library:loan_return' loan.pk %}" style="display:inline">{% csrf_token %}<button type="submit">Вернуть</button></form>{% else %}возвращена {{ loan.returned_at|date }}{% endif %}</li>
+{% empty %}
+<li>Нет выдач.</li>
+{% endfor %}
+</ul>
+<a href="{% url 'library:book_list' %}">Книги</a> | <a href="{% url 'library:reader_list' %}">Читатели</a>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head><title>Читатели</title></head>
+<body>
+<h1>Читатели</h1>
+<ul>
+{% for r in readers %}
+<li>{{ r.last_name }} {{ r.first_name }} ({{ r.email }})</li>
+{% empty %}
+<li>Нет читателей.</li>
+{% endfor %}
+</ul>
+<a href="{% url 'library:reader_add' %}">Добавить читателя</a> | <a href="{% url 'library:book_list' %}">Книги</a> | <a href="{% url 'library:loan_list' %}">Выдачи</a>
+</body>
+</html>
