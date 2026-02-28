@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ event.title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">{{ event.title }}</h4>
+                <div>
+                    <a href="{% url 'tasks:event_edit' event.pk %}" class="btn btn-sm btn-outline-primary">Изменить</a>
+                    <a href="{% url 'tasks:event_delete' event.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">
+                    <i class="bi bi-calendar"></i> {{ event.date|date:"d.m.Y" }} 
+                    <i class="bi bi-clock"></i> {{ event.time|time:"H:i" }}
+                </p>
+                {% if event.description %}
+                <p>{{ event.description }}</p>
+                {% endif %}
+                <p class="small text-muted">
+                    Уведомление за {{ event.notify_minutes_before }} мин. до события
+                </p>
+            </div>
+        </div>
+        <a href="{% url 'tasks:event_list' %}" class="btn btn-secondary mt-3">← Назад к списку</a>
+    </div>
+</div>
+{% endblock %}
