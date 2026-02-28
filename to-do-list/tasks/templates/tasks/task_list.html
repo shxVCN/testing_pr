@@ -1,0 +1,45 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}Список задач - To-Do List{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Мои задачи</h1>
+    <a href="{% url 'task_create' %}" class="btn btn-primary">+ Добавить задачу</a>
+</div>
+
+{% if tasks|length %}
+<div class="list-group">
+    {% for task in tasks %}
+    <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center flex-grow-1">
+            <form action="{% url 'task_toggle_complete' task.pk %}" method="post" class="me-3">
+                {% csrf_token %}
+                <input type="checkbox" class="form-check-input" {% if task.completed %}checked{% endif %}
+                       onchange="this.form.submit()" title="Отметить как выполненное">
+            </form>
+            <div>
+                <a href="{% url 'task_detail' task.pk %}" class="text-decoration-none text-dark">
+                    <h5 class="mb-0 {% if task.completed %}text-decoration-line-through text-muted{% endif %}">
+                        {{ task.title }}
+                    </h5>
+                </a>
+                {% if task.description %}
+                <small class="text-muted">{{ task.description|truncatewords:10 }}</small>
+                {% endif %}
+            </div>
+        </div>
+        <div class="btn-group">
+            <a href="{% url 'task_detail' task.pk %}" class="btn btn-sm btn-outline-primary">Просмотр</a>
+            <a href="{% url 'task_update' task.pk %}" class="btn btn-sm btn-outline-secondary">Изменить</a>
+            <a href="{% url 'task_delete' task.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    <p class="mb-0">У вас пока нет задач. <a href="{% url 'task_create' %}">Добавьте первую задачу</a>!</p>
+</div>
+{% endif %}
+{% endblock %}
