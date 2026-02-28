@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Список опросов{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Опросы</h1>
+
+{% if user.is_authenticated %}
+<a href="{% url 'polls:poll_create' %}" class="btn btn-primary mb-3">Создать опрос</a>
+{% endif %}
+
+<div class="row">
+    {% for poll in polls %}
+    <div class="col-md-6 col-lg-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ poll.question }}</h5>
+                <p class="card-text text-muted small">
+                    {{ poll.choices.count }} вариантов · {{ poll.get_total_votes }} голосов
+                </p>
+                <a href="{% url 'polls:poll_detail' poll.pk %}" class="btn btn-outline-primary btn-sm">Голосовать</a>
+                <a href="{% url 'polls:poll_results' poll.pk %}" class="btn btn-outline-secondary btn-sm">Результаты</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">Опросов пока нет.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

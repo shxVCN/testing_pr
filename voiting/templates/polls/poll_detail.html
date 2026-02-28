@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ poll.question }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4>{{ poll.question }}</h4>
+    </div>
+    <div class="card-body">
+        {% if user_has_voted %}
+        <p class="text-success">Вы уже проголосовали.</p>
+        <a href="{% url 'polls:poll_results' poll.pk %}" class="btn btn-primary">Смотреть результаты</a>
+        {% elif user.is_authenticated and form %}
+        <form method="post">
+            {% csrf_token %}
+            {% for choice in form.choice %}
+            <div class="form-check mb-2">
+                {{ choice.tag }}
+                <label class="form-check-label" for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary mt-3">Проголосовать</button>
+        </form>
+        {% else %}
+        <p class="text-muted">Войдите, чтобы проголосовать.</p>
+        <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-outline-primary">Войти</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

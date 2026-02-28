@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Создать опрос{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4>Создать новый опрос</h4>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_question" class="form-label">{{ form.question.label }}</label>
+                <input type="text" name="question" id="id_question" class="form-control" 
+                       value="{{ form.question.value|default:'' }}" required maxlength="255">
+                {% if form.question.errors %}
+                <div class="invalid-feedback d-block">{{ form.question.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="id_choice1" class="form-label">{{ form.choice1.label }}</label>
+                <input type="text" name="choice1" id="id_choice1" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_choice2" class="form-label">{{ form.choice2.label }}</label>
+                <input type="text" name="choice2" id="id_choice2" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_choice3" class="form-label">{{ form.choice3.label }}</label>
+                <input type="text" name="choice3" id="id_choice3" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Создать опрос</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

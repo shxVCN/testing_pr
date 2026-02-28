@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Результаты: {{ poll.question }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4>Результаты: {{ poll.question }}</h4>
+    </div>
+    <div class="card-body">
+        <p class="text-muted">Всего голосов: {{ total_votes }}</p>
+        <ul class="list-group list-group-flush">
+            {% for choice in choices_with_votes %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ choice.text }}
+                <span class="badge bg-primary rounded-pill">{{ choice.votes_count }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'polls:poll_detail' poll.pk %}" class="btn btn-outline-primary mt-3">Назад к опросу</a>
+    </div>
+</div>
+{% endblock %}
